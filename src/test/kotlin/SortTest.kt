@@ -9,7 +9,7 @@ class SortTest {
     private val arr3 = randomGenerateArr(-500, 500, 1000)
     private val vast = randomGenerateArr(-100000, 100000, 100000)
     private val allArrMap = mapOf(
-        "arr0" to arr0,
+        "noValueArray" to arr0,
         "arr1" to arr1,
         "arr2" to arr2,
         "biggerArr" to arr3,
