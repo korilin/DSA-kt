@@ -7,16 +7,14 @@ package algorithm
  *   最坏时间复杂度：O(n²)
  *   平均时间复杂度：O(n²)
  *   最优时间复杂度：O(n²)
- * 空间复杂度：
- *   O(1)
+ * 空间复杂度：O(1)
  *
- * Bubble Sort：sort by asc
+ * Bubble Sort
  * Time Complexity:
  *   Optimal Time Complexity: O(n²)
  *   Average Time Complexity: O(n²)
  *   Worst Time Complexity: O(n²)
- * Space Complexity:
- *   O(1)
+ * Space Complexity: O(1)
  */
 fun bubbleSort(arr: IntArray) {
     var temp: Int
