@@ -11,6 +11,8 @@
 
 空间复杂度：O(1)
 
+稳定性：稳定
+
 ```Kotlin
 fun bubbleSort(arr: IntArray) {
     var temp: Int
@@ -32,10 +34,12 @@ fun bubbleSort(arr: IntArray) {
 - 最坏时间复杂度：O(n²)
 - 平均时间复杂度：O(n²)
 - 最优时间复杂度：O(n²)
-- 
+
 空间复杂度：O(1)
 
-```
+稳定性：不稳定
+
+```Kotlin
 fun selectionSort(arr: IntArray) {
     var minimumValue: Int
     var minimumIndex: Int
@@ -55,3 +59,5 @@ fun selectionSort(arr: IntArray) {
     }
 }
 ```
+
+## 直接插入排序
