@@ -1,15 +1,21 @@
 import org.junit.jupiter.api.Test
-import sort_algorithm.bubbleSort
-import sort_algorithm.directInsertionSort
-import sort_algorithm.selectionSort
+import sort_algorithm.*
 
 class SortTest {
 
     private val arr0 = intArrayOf()
-    private val arr1 = randomArr(0, 100, 20)
-    private val arr2 = randomArr(-10, 10, 10)
+    private val arr1 = randomGenerateArr(0, 10, 10)
+    private val arr2 = randomGenerateArr(-10, 10, 10)
+    private val arr3 = randomGenerateArr(-500, 500, 1000)
+    private val vast = randomGenerateArr(-100000, 100000, 100000)
+    private val allArrMap = mapOf(
+        "arr0" to arr0,
+        "arr1" to arr1,
+        "arr2" to arr2,
+        "biggerArr" to arr3,
+    )
 
-    private fun randomArr(start: Int, end: Int, number: Int): IntArray {
+    private fun randomGenerateArr(start: Int, end: Int, number: Int): IntArray {
         val list = mutableListOf<Int>()
         for (i in 1..number) {
             list.add((start..end).random())
@@ -17,41 +23,54 @@ class SortTest {
         return list.toIntArray()
     }
 
-    private fun showArr(name:String, array: IntArray) {
+    private fun showArr(name: String, array: IntArray) {
         print("$name: ")
         for (num in array) print("$num ")
         println("")
     }
 
     private fun showAllArr() {
-        showArr("arr0", arr0)
-        showArr("arr1", arr1)
-        showArr("arr2", arr2)
+        for ((key, arr) in allArrMap) showArr(key, arr)
     }
 
-    private fun sortTestContrast(name:String, run:(IntArray)->Unit){
+    private fun sortTestContrast(name: String, runVast: Boolean = false, run: (IntArray) -> Unit) {
         println("————— $name ———")
         showAllArr()
         println("———— to ————")
-        run(arr0)
-        run(arr1)
-        run(arr2)
+        var startNanoTime: Long = System.nanoTime()
+        for (arr in allArrMap.values) run(arr)
+        var endNanoTime: Long = System.nanoTime()
         showAllArr()
+        var time = endNanoTime - startNanoTime
+        println("Elapsed Time: $time 纳秒，位数: ${time.toString().length}")
+        if (runVast) {
+            startNanoTime = System.nanoTime()
+            run(vast)
+            endNanoTime = System.nanoTime()
+            time = endNanoTime - startNanoTime
+            println("巨大数组排序时间：$time 纳秒，位数: ${time.toString().length}")
+        }
     }
 
     @Test
     fun bubbleSortTest() {
-        sortTestContrast("冒泡排序"){ array:IntArray -> bubbleSort(array) }
+        sortTestContrast("冒泡排序") { array: IntArray -> bubbleSort(array) }
     }
 
     @Test
     fun selectionSortTest() {
-        sortTestContrast("选择排序"){ array:IntArray -> selectionSort(array) }
+        sortTestContrast("选择排序") { array: IntArray -> selectionSort(array) }
     }
 
     @Test
-    fun directInsertionSortTest(){
-        sortTestContrast("直接插入排序"){ array:IntArray -> directInsertionSort(array) }
+    fun directInsertionSortTest() {
+        sortTestContrast("直接插入排序") { array: IntArray -> directInsertionSort(array) }
+    }
+
+    @Test
+    fun quickSortTest() {
+        sortTestContrast("快速排序") { array: IntArray -> quickSort(array) }
+
     }
 
 }

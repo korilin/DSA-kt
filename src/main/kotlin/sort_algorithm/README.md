@@ -1,14 +1,12 @@
-# DSA-kt
+# Kotlin 实现常见排序算法
 
-## Kotlin 实现常见排序算法
+所有算法的代码例子均为ASC（降序排序），代码例子的实现使用较为简单的版本
 
-所有算法的代码例子均为ASC（降序排序），且均不讨论最优情况的时间复杂度，需要看详情可参考对应 Wiki
-
-### 冒泡排序
+## 冒泡排序
 
 时间复杂度：
-- 平均时间复杂度：O(n²)
-- 最坏时间复杂度：O(n²)
+- 平均时间复杂度：Ο(n²)
+- 最坏时间复杂度：Ο(n²)
 
 空间复杂度：O(1)
 
@@ -20,20 +18,19 @@ fun bubbleSort(array: IntArray) {
     for (c in 1 until array.size) {
         for (i in 0 until array.size - c) {
             if (array[i] > array[i + 1]) {
-                temp = array[i]
-                array[i] = array[i + 1]
-                array[i + 1] = temp
+                 array[i] = array[i + 1].also { array[i + 1] = array[i] }
             }
         }
     }
 }
 ```
 
-### 选择排序
+## 选择排序
 
 时间复杂度：
-- 平均时间复杂度：O(n²)
-- 最坏时间复杂度：O(n²)
+- 最优时间复杂度：Ο(n²)
+- 平均时间复杂度：Ο(n²)
+- 最坏时间复杂度：Ο(n²)
 
 空间复杂度：O(1)
 
@@ -60,26 +57,66 @@ fun selectionSort(array: IntArray) {
 }
 ```
 
-### 直接插入排序
+## 直接插入排序
 
-- 平均时间复杂度：O(n²)
-- 最坏时间复杂度：O(n²)
+时间复杂度：
+- 最优时间复杂度：Ο(n)
+- 平均时间复杂度：Ο(n²)
+- 最坏时间复杂度：Ο(n²)
 
-空间复杂度：O(1)
+空间复杂度：Ο(1)
 
 Wiki: https://zh.wikipedia.org/wiki/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F
 
 ```Kotlin
 fun directInsertionSort(array: IntArray) {
     var temp: Int
+    var now: Int
     for (index in 1 until array.size) {
-        var now = index
+        now = index
         while (now != 0 && array[now] < array[now - 1]) {
-            temp = array[now]
-            array[now] = array[now - 1]
-            array[now - 1] = temp
+            array[now] = array[now - 1].also { array[now - 1] = array[now] }
             now--
         }
     }
+}
+```
+
+## 快速排序
+
+时间复杂度：
+- 最优时间复杂度：Ο(n*log n)
+- 平均时间复杂度：Ο(n*log n)
+- 最坏时间复杂度：Ο(n²)
+
+空间复杂度：Ο(1)
+
+Wiki: https://zh.wikipedia.org/zh-cn/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F
+
+```Kotlin
+fun quickSort(array: IntArray) {
+
+    fun inner(left: Int, right: Int) {
+        
+        fun partition(left: Int, right: Int): Int {
+            // 以最左边的值作为基准值
+            var pivotPreIndex = left
+            for (index in left..right) {
+                if (array[index] <= array[right]) {
+                    array[pivotPreIndex] = array[index].also { array[index] = array[pivotPreIndex] }
+                    pivotPreIndex += 1
+                }
+            }
+            return pivotPreIndex - 1
+        }
+
+        if (left < right) {
+            val p = partition(left, right)
+            inner(left, p - 1)
+            inner(p + 1, right)
+        }
+    }
+    
+    inner(0, array.size - 1)
 }
 ```

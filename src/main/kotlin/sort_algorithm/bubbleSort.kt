@@ -18,9 +18,7 @@ fun bubbleSort(array: IntArray) {
     for (c in 1 until array.size) {
         for (i in 0 until array.size - c) {
             if (array[i] > array[i + 1]) {
-                temp = array[i]
-                array[i] = array[i + 1]
-                array[i + 1] = temp
+                array[i] = array[i + 1].also { array[i + 1] = array[i] }
             }
         }
     }
