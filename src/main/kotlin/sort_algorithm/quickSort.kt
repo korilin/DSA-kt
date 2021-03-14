@@ -1,5 +1,20 @@
 package sort_algorithm
 
+/**
+ * 快速排序
+ * 时间复杂度：
+ *   最优时间复杂度：Ο(n*log(n))
+ *   平均时间复杂度：Ο(n*log(n))
+ *   最坏时间复杂度：Ο(n²)
+ * 空间复杂度：Ο(1)
+ *
+ * Quick Sort
+ * Time Complexity:
+ *   Optimal Time Complexity: Ο(n*log(n))
+ *   Average Time Complexity: Ο(n*log(n))
+ *   Worst Time Complexity: Ο(n²)
+ * Space Complexity: Ο(1)
+ */
 fun quickSort(array: IntArray) {
 
     fun inner(left: Int, right: Int) {

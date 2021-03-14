@@ -70,7 +70,6 @@ class SortTest {
     @Test
     fun quickSortTest() {
         sortTestContrast("快速排序") { array: IntArray -> quickSort(array) }
-
     }
 
 }

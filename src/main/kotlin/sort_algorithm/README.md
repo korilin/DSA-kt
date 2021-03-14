@@ -85,8 +85,8 @@ fun directInsertionSort(array: IntArray) {
 ## 快速排序
 
 时间复杂度：
-- 最优时间复杂度：Ο(n*log n)
-- 平均时间复杂度：Ο(n*log n)
+- 最优时间复杂度：Ο(n*log(n))
+- 平均时间复杂度：Ο(n*log(n))
 - 最坏时间复杂度：Ο(n²)
 
 空间复杂度：Ο(1)

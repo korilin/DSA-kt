@@ -3,17 +3,17 @@ package sort_algorithm
 /**
  * 直接插入排序
  * 时间复杂度：
- *   最优时间复杂度：O(n)
- *   平均时间复杂度：O(n²)
- *   最坏时间复杂度：O(n²)
- * 空间复杂度：O(1)
+ *   最优时间复杂度：Ο(n)
+ *   平均时间复杂度：Ο(n²)
+ *   最坏时间复杂度：Ο(n²)
+ * 空间复杂度：Ο(1)
  *
  * Direct Insertion Sort
  * Time Complexity:
- *   Optimal Time Complexity: O(n)
- *   Average Time Complexity: O(n²)
- *   Worst Time Complexity: O(n²)
- * Space Complexity: O(1)
+ *   Optimal Time Complexity: Ο(n)
+ *   Average Time Complexity: Ο(n²)
+ *   Worst Time Complexity: Ο(n²)
+ * Space Complexity: Ο(1)
  */
 fun directInsertionSort(array: IntArray) {
     var temp: Int
