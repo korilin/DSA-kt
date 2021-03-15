@@ -70,7 +70,6 @@ Wiki: https://zh.wikipedia.org/wiki/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F
 
 ```Kotlin
 fun directInsertionSort(array: IntArray) {
-    var temp: Int
     var now: Int
     for (index in 1 until array.size) {
         now = index
@@ -118,5 +117,32 @@ fun quickSort(array: IntArray) {
     }
     
     inner(0, array.size - 1)
+}
+```
+
+## 希尔排序
+
+时间复杂度：
+- 最优时间复杂度：Ο(n)
+- 最坏时间复杂度：最好的情况为 Ο(n*log²(n))
+
+空间复杂度：Ο(1)
+
+Wiki: https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F
+
+```Kotlin
+fun shellSort(array: IntArray){
+    var gap = array.size/2
+    var now:Int
+    while (gap >= 1){
+        for (index in gap until array.size){
+            now = index
+            while (now >= gap && array[now] < array[now-gap]){
+                array[now] = array[now-gap].also { array[now-gap] = array[now] }
+                now -= gap
+            }
+        }
+        gap /= 2
+    }
 }
 ```

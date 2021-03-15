@@ -16,7 +16,6 @@ package sort_algorithm
  * Space Complexity: Ο(1)
  */
 fun directInsertionSort(array: IntArray) {
-    var temp: Int
     var now: Int
     for (index in 1 until array.size) {
         now = index

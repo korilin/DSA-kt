@@ -72,4 +72,9 @@ class SortTest {
         sortTestContrast("快速排序") { array: IntArray -> quickSort(array) }
     }
 
+    @Test
+    fun shellSortTest() {
+        sortTestContrast("希尔排序") { array: IntArray -> shellSort(array) }
+    }
+
 }
