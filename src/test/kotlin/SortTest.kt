@@ -77,4 +77,8 @@ class SortTest {
         sortTestContrast("希尔排序") { array: IntArray -> shellSort(array) }
     }
 
+    @Test
+    fun mergeSortTest() {
+        sortTestContrast("归并排序") { array: IntArray -> mergeSort(array) }
+    }
 }

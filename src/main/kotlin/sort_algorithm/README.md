@@ -147,3 +147,49 @@ fun shellSort(array: IntArray){
     }
 }
 ```
+
+## 归并排序
+
+时间复杂度：
+- 最优时间复杂度：
+- 平均时间复杂度：
+- 最坏时间复杂度：
+
+空间复杂度：
+
+Wiki: https://zh.wikipedia.org/zh-cn/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F
+
+```Kotlin
+fun mergeSort(array: IntArray) {
+
+    fun merge(left: Int, right: Int) {
+        if (right - left + 1 < 2) {
+            return
+        }
+        val middle = (left + right) / 2
+        merge(left, middle)
+        merge(middle + 1, right)
+        var leftIndex = left
+        var rightIndex = middle + 1
+        var mergeIndex = 0
+        val mergeArray = arrayOfNulls<Int>(right - left + 1)
+        while (leftIndex <= middle || rightIndex <= right) {
+            if (leftIndex > middle) {
+                mergeArray[mergeIndex] = array[rightIndex]
+                rightIndex += 1
+            } else if (rightIndex > right || array[leftIndex] <= array[rightIndex]) {
+                mergeArray[mergeIndex] = array[leftIndex]
+                leftIndex += 1
+            } else {
+                mergeArray[mergeIndex] = array[rightIndex]
+                rightIndex += 1
+            }
+            mergeIndex += 1
+        }
+        for ((index, value) in mergeArray.withIndex()) {
+            array[left + index] = value!!
+        }
+    }
+    merge(0, array.size - 1)
+}
+```
