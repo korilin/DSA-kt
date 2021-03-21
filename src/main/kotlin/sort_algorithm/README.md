@@ -174,10 +174,7 @@ fun mergeSort(array: IntArray) {
         var mergeIndex = 0
         val mergeArray = arrayOfNulls<Int>(right - left + 1)
         while (leftIndex <= middle || rightIndex <= right) {
-            if (leftIndex > middle) {
-                mergeArray[mergeIndex] = array[rightIndex]
-                rightIndex += 1
-            } else if (rightIndex > right || array[leftIndex] <= array[rightIndex]) {
+            if (leftIndex <= middle && (rightIndex > right || array[leftIndex] <= array[rightIndex])) {
                 mergeArray[mergeIndex] = array[leftIndex]
                 leftIndex += 1
             } else {
