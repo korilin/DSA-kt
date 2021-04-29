@@ -23,5 +23,5 @@ fun directInsertionSort(array: IntArray) {
             array[now] = array[now - 1].also { array[now - 1] = array[now] }
             now--
         }
-    }
+}
 }
