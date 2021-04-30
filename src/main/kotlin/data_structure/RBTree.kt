@@ -1,4 +1,7 @@
-package search_algorithm
+package data_structure
+
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 红黑树
@@ -10,6 +13,8 @@ class RBTree {
     }
 
     inner class Node(var `val`: Int, var right: Node?, var left: Node?, var father: Node?, var color: Color)
+
+    inner class NodeWithLevel(val node: Node?, val level: Int)
 
     private var root: Node? = null
 
@@ -23,9 +28,40 @@ class RBTree {
         TODO()
     }
 
-    fun remove(e: Int){
+    fun remove(e: Int) {
         TODO()
     }
+
+    /**
+     * 打印树的结构（包括 NIL 节点）
+     */
+    fun printTree() {
+        val nodeList = LinkedList<NodeWithLevel>()
+
+        // 使用中序遍历
+        fun dfs(node: Node?, level: Int) {
+            if (node != null) dfs(node.left, level + 1)
+            nodeList.add(NodeWithLevel(node, level))
+            if (node != null) dfs(node.right, level + 1)
+        }
+
+        dfs(root, 0)
+
+        for (nodeWithLevel in nodeList) {
+            var nodePrint = ""
+            repeat(nodeWithLevel.level) {
+                nodePrint += "\t"
+            }
+            nodePrint += nodeWithLevel.node?.let {
+                when (it.color) {
+                    Color.BLACK -> "B."
+                    Color.RED -> "R."
+                } + it.`val`
+            } ?: "NIL"
+            println(nodePrint)
+        }
+    }
+
 
     /**
      * 将节点插入的红黑树中
@@ -104,9 +140,9 @@ class RBTree {
      */
     private fun leftRotate(node: Node) {
         val right = node.right!!
-        childChange(node.father, right)
+        childChange(node.father, node, right)
         node.father = right
-        node.right = right.right
+        node.right = right.left
         right.left = node
     }
 
@@ -115,19 +151,19 @@ class RBTree {
      */
     private fun rightRotate(node: Node) {
         val left = node.left!!
-        childChange(node.father, left)
+        childChange(node.father, node, left)
         node.father = left
-        node.left = left.left
+        node.left = left.right
         left.right = node
     }
 
     /**
      * 旋转操作时，修改父节点的子节点指向
      */
-    private fun childChange(father: Node?, child: Node) = when {
-        father == null -> root = child
-        father.left == child -> father.left = child
-        else -> father.right = child
+    private fun childChange(father: Node?, child: Node, newChild: Node) = when {
+        father == null -> root = newChild
+        father.left == child -> father.left = newChild
+        else -> father.right = newChild
     }
 
 }
