@@ -1,31 +1,30 @@
 package data_structure
 
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * 红黑树
  */
-class RBTree {
+class RBTree<E> {
     sealed class Color {
         object RED : Color()
         object BLACK : Color()
     }
 
-    inner class Node(var `val`: Int, var right: Node?, var left: Node?, var father: Node?, var color: Color)
+    inner class Node<E>(var key: Int, var value: E, var right: Node<E>?, var left: Node<E>?, var father: Node<E>?, var color: Color)
 
-    inner class NodeWithLevel(val node: Node?, val level: Int)
+    inner class NodeWithLevel(val node: Node<E>?, val level: Int)
 
-    private var root: Node? = null
+    private var root: Node<E>? = null
 
-    fun add(e: Int) {
-        val newNode = Node(e, null, null, null, Color.RED)
+    fun add(weight: Int, value: E) {
+        val newNode = Node(weight, value,null, null, null, Color.RED)
         insertNodeIntoTree(newNode)
         balanceControl(newNode)
     }
 
-    fun get(e: Int) {
-        TODO()
+    fun get(key: Int) {
+
     }
 
     fun remove(e: Int) {
@@ -39,7 +38,7 @@ class RBTree {
         val nodeList = LinkedList<NodeWithLevel>()
 
         // 使用中序遍历
-        fun dfs(node: Node?, level: Int) {
+        fun dfs(node: Node<E>?, level: Int) {
             if (node != null) dfs(node.left, level + 1)
             nodeList.add(NodeWithLevel(node, level))
             if (node != null) dfs(node.right, level + 1)
@@ -56,7 +55,7 @@ class RBTree {
                 when (it.color) {
                     Color.BLACK -> "B."
                     Color.RED -> "R."
-                } + it.`val`
+                } + it.key
             } ?: "NIL"
             println(nodePrint)
         }
@@ -66,13 +65,13 @@ class RBTree {
     /**
      * 将节点插入的红黑树中
      */
-    private fun insertNodeIntoTree(node: Node) {
+    private fun insertNodeIntoTree(node: Node<E>) {
         var compareNode = root
-        var father: Node? = null
+        var father: Node<E>? = null
 
         while (compareNode != null) {
             father = compareNode
-            compareNode = if (node.`val` >= compareNode.`val`) compareNode.right else compareNode.left
+            compareNode = if (node.key >= compareNode.key) compareNode.right else compareNode.left
         }
 
         when {
@@ -80,7 +79,7 @@ class RBTree {
                 node.color = Color.BLACK
                 root = node
             }
-            node.`val` >= father.`val` -> father.right = node
+            node.key >= father.key -> father.right = node
             else -> father.left = node
         }
 
@@ -91,7 +90,7 @@ class RBTree {
     /**
      * 对当前操作的红色节点进行平衡处理
      */
-    private fun balanceControl(node: Node) {
+    private fun balanceControl(node: Node<E>) {
         val father = node.father
         if (father == null) {
             node.color = Color.BLACK
@@ -115,7 +114,7 @@ class RBTree {
     /**
      * 进行旋转操作的选择
      */
-    private fun rotate(node: Node, father: Node, grandfather: Node) {
+    private fun rotate(node: Node<E>, father: Node<E>, grandfather: Node<E>) {
         if (grandfather.left == father) {
             if (father.left == node) {
                 father.color = Color.BLACK
@@ -138,7 +137,7 @@ class RBTree {
     /**
      * 以传入的节点为中心进行左旋操作
      */
-    private fun leftRotate(node: Node) {
+    private fun leftRotate(node: Node<E>) {
         val right = node.right!!
         childChange(node.father, node, right)
         node.father = right
@@ -149,7 +148,7 @@ class RBTree {
     /**
      * 以传入的节点为中心进行右旋操作
      */
-    private fun rightRotate(node: Node) {
+    private fun rightRotate(node: Node<E>) {
         val left = node.left!!
         childChange(node.father, node, left)
         node.father = left
@@ -160,7 +159,7 @@ class RBTree {
     /**
      * 旋转操作时，修改父节点的子节点指向
      */
-    private fun childChange(father: Node?, child: Node, newChild: Node) = when {
+    private fun childChange(father: Node<E>?, child: Node<E>, newChild: Node<E>) = when {
         father == null -> root = newChild
         father.left == child -> father.left = newChild
         else -> father.right = newChild
