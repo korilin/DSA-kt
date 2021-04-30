@@ -23,8 +23,13 @@ class RBTree<E> {
         balanceControl(newNode)
     }
 
-    fun get(key: Int) {
-
+    fun get(key: Int):E?  {
+        var compareNode = root
+        while (compareNode != null) {
+            if (compareNode.key == key) return compareNode.value
+            compareNode = if (key < compareNode.key) compareNode.left else compareNode.right
+        }
+        return null
     }
 
     fun remove(e: Int) {
