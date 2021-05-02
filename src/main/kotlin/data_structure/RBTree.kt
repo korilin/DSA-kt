@@ -11,19 +11,26 @@ class RBTree<E> {
         object BLACK : Color()
     }
 
-    inner class Node<E>(var key: Int, var value: E, var right: Node<E>?, var left: Node<E>?, var father: Node<E>?, var color: Color)
+    inner class Node<E>(
+        var key: Int,
+        var value: E,
+        var right: Node<E>?,
+        var left: Node<E>?,
+        var father: Node<E>?,
+        var color: Color
+    )
 
     inner class NodeWithLevel(val node: Node<E>?, val level: Int)
 
     private var root: Node<E>? = null
 
-    fun add(weight: Int, value: E) {
-        val newNode = Node(weight, value,null, null, null, Color.RED)
+    fun add(key: Int, value: E) {
+        val newNode = Node(key, value, null, null, null, Color.RED)
         insertNodeIntoTree(newNode)
         balanceControl(newNode)
     }
 
-    fun get(key: Int):E?  {
+    fun get(key: Int): E? {
         var compareNode = root
         while (compareNode != null) {
             if (compareNode.key == key) return compareNode.value
@@ -58,9 +65,9 @@ class RBTree<E> {
             }
             nodePrint += nodeWithLevel.node?.let {
                 when (it.color) {
-                    Color.BLACK -> "B."
-                    Color.RED -> "R."
-                } + it.key
+                    Color.BLACK -> "B|"
+                    Color.RED -> "R|"
+                } + it.key + "|" + it.value
             } ?: "NIL"
             println(nodePrint)
         }
@@ -145,7 +152,6 @@ class RBTree<E> {
     private fun leftRotate(node: Node<E>) {
         val right = node.right!!
         childChange(node.father, node, right)
-        node.father = right
         node.right = right.left
         right.left = node
     }
@@ -156,7 +162,6 @@ class RBTree<E> {
     private fun rightRotate(node: Node<E>) {
         val left = node.left!!
         childChange(node.father, node, left)
-        node.father = left
         node.left = left.right
         left.right = node
     }
@@ -165,9 +170,12 @@ class RBTree<E> {
      * 旋转操作时，修改父节点的子节点指向
      */
     private fun childChange(father: Node<E>?, child: Node<E>, newChild: Node<E>) = when {
-        father == null -> root = newChild
-        father.left == child -> father.left = newChild
+        father == null -> root = newChild;
+        father.left == child -> father.left = newChild;
         else -> father.right = newChild
+    }.also {
+        newChild.father = father
+        child.father = newChild
     }
 
 }
