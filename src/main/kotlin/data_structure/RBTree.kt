@@ -1,7 +1,5 @@
 package data_structure
 
-import java.util.*
-
 /**
  * 红黑树
  */
@@ -20,14 +18,11 @@ class RBTree<E> {
         var color: Color
     )
 
-    inner class NodeWithLevel(val node: Node<E>?, val level: Int)
-
     private var root: Node<E>? = null
 
     fun add(key: Int, value: E) {
         val newNode = Node(key, value, null, null, null, Color.RED)
-        insertNodeIntoTree(newNode)
-        balanceControl(newNode)
+        if (insertNodeIntoTree(newNode))  balanceControl(newNode)
     }
 
     fun get(key: Int): E? {
@@ -47,23 +42,12 @@ class RBTree<E> {
      * 打印树的结构（包括 NIL 节点）
      */
     fun printTree() {
-        val nodeList = LinkedList<NodeWithLevel>()
-
-        // 使用中序遍历
-        fun dfs(node: Node<E>?, level: Int) {
-            if (node != null) dfs(node.left, level + 1)
-            nodeList.add(NodeWithLevel(node, level))
-            if (node != null) dfs(node.right, level + 1)
-        }
-
-        dfs(root, 0)
-
-        for (nodeWithLevel in nodeList) {
+        fun printNode(node: Node<E>?, level: Int) {
             var nodePrint = ""
-            repeat(nodeWithLevel.level) {
+            repeat(level) {
                 nodePrint += "\t"
             }
-            nodePrint += nodeWithLevel.node?.let {
+            nodePrint += node?.let {
                 when (it.color) {
                     Color.BLACK -> "B|"
                     Color.RED -> "R|"
@@ -71,19 +55,34 @@ class RBTree<E> {
             } ?: "NIL"
             println(nodePrint)
         }
+
+        // 使用中序遍历
+        fun dfs(node: Node<E>?, level: Int) {
+            if (node != null) dfs(node.left, level + 1)
+            printNode(node, level)
+            if (node != null) dfs(node.right, level + 1)
+        }
+
+        dfs(root, 0)
     }
 
 
     /**
-     * 将节点插入的红黑树中
+     * 将节点插入的红黑树中，当对应 key 的节点存在时，使用覆盖原本节点的 value，而不是进行插入操作
+     *
+     * @return 是否进行了插入操作
      */
-    private fun insertNodeIntoTree(node: Node<E>) {
+    private fun insertNodeIntoTree(node: Node<E>): Boolean {
         var compareNode = root
         var father: Node<E>? = null
 
         while (compareNode != null) {
+            if (compareNode.key == node.key) {
+                compareNode.value = node.value
+                return false
+            }
             father = compareNode
-            compareNode = if (node.key >= compareNode.key) compareNode.right else compareNode.left
+            compareNode = if (node.key > compareNode.key) compareNode.right else compareNode.left
         }
 
         when {
@@ -96,6 +95,7 @@ class RBTree<E> {
         }
 
         node.father = father
+        return true
     }
 
 
@@ -170,8 +170,8 @@ class RBTree<E> {
      * 旋转操作时，修改父节点的子节点指向
      */
     private fun childChange(father: Node<E>?, child: Node<E>, newChild: Node<E>) = when {
-        father == null -> root = newChild;
-        father.left == child -> father.left = newChild;
+        father == null -> root = newChild
+        father.left == child -> father.left = newChild
         else -> father.right = newChild
     }.also {
         newChild.father = father
